@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Plus, ChevronDown, ChevronUp, Trash2, Settings2 } from 'lucide-react';
+import { Plus, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SubblocoCard from './SubblocoCard';
 
 interface StepTurnosRotinasProps {
   template: Template;
