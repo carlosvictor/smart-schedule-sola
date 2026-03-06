@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Plus, ChevronDown, ChevronUp, Trash2, Settings2 } from 'lucide-react';
+import { Plus, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SubblocoCard from './SubblocoCard';
 
 interface StepTurnosRotinasProps {
   template: Template;
@@ -206,37 +207,14 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
                             <div className="flex items-center justify-between mb-2">
                               <Label className="text-xs font-medium">Subblocos</Label>
                             </div>
-                            <div className="space-y-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                               {rotina.subblocos.map(sub => (
-                                <div key={sub.id} className="flex items-center gap-2 p-2 rounded border bg-muted/30">
-                                  <div className="flex-1 min-w-0">
-                                    <AutocompleteInput
-                                      value={sub.titulo}
-                                      onChange={v => updateSubbloco(rotina.id, sub.id, { titulo: v })}
-                                      suggestions={SUBBLOCOS_CADASTRADOS_MOCK}
-                                      placeholder="Nome do subbloco..."
-                                    />
-                                  </div>
-                                  <div className="text-[10px] text-muted-foreground whitespace-nowrap">
-                                    {sub.diasSemana.length} dias
-                                  </div>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7 shrink-0"
-                                    onClick={() => setConfigSubbloco({ rotinaId: rotina.id, subblocoId: sub.id })}
-                                  >
-                                    <Settings2 className="h-3.5 w-3.5" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7 shrink-0"
-                                    onClick={() => removeSubbloco(rotina.id, sub.id)}
-                                  >
-                                    <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
-                                  </Button>
-                                </div>
+                                <SubblocoCard
+                                  key={sub.id}
+                                  subbloco={sub}
+                                  onConfigure={() => setConfigSubbloco({ rotinaId: rotina.id, subblocoId: sub.id })}
+                                  onRemove={() => removeSubbloco(rotina.id, sub.id)}
+                                />
                               ))}
                             </div>
                             <Button
