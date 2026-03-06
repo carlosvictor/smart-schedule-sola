@@ -207,7 +207,7 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
                             <div className="flex items-center justify-between mb-2">
                               <Label className="text-xs font-medium">Subblocos</Label>
                             </div>
-                            <div className="space-y-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                               {rotina.subblocos.map(sub => (
                                 <SubblocoCard
                                   key={sub.id}
