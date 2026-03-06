@@ -337,6 +337,45 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Subbloco Picker Modal */}
+      <Dialog open={!!pickerRotinaId} onOpenChange={open => { if (!open) { setPickerRotinaId(null); setPickerSearch(''); } }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base">Adicionar Subbloco</DialogTitle>
+          </DialogHeader>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              className="pl-9 h-9 text-sm"
+              placeholder="Pesquisar subbloco..."
+              value={pickerSearch}
+              onChange={e => setPickerSearch(e.target.value)}
+              autoFocus
+            />
+          </div>
+          <div className="max-h-64 overflow-y-auto space-y-0.5 -mx-1 px-1">
+            {SUBBLOCOS_CADASTRADOS_MOCK
+              .filter(s => s.toLowerCase().includes(pickerSearch.toLowerCase()))
+              .map(name => (
+                <button
+                  key={name}
+                  className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-accent transition-colors"
+                  onClick={() => {
+                    if (pickerRotinaId) addSubbloco(pickerRotinaId, name);
+                    setPickerRotinaId(null);
+                    setPickerSearch('');
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            {SUBBLOCOS_CADASTRADOS_MOCK.filter(s => s.toLowerCase().includes(pickerSearch.toLowerCase())).length === 0 && (
+              <p className="text-sm text-muted-foreground text-center py-4">Nenhum subbloco encontrado</p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
