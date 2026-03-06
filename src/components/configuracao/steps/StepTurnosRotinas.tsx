@@ -209,35 +209,12 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
                             </div>
                             <div className="space-y-2">
                               {rotina.subblocos.map(sub => (
-                                <div key={sub.id} className="flex items-center gap-2 p-2 rounded border bg-muted/30">
-                                  <div className="flex-1 min-w-0">
-                                    <AutocompleteInput
-                                      value={sub.titulo}
-                                      onChange={v => updateSubbloco(rotina.id, sub.id, { titulo: v })}
-                                      suggestions={SUBBLOCOS_CADASTRADOS_MOCK}
-                                      placeholder="Nome do subbloco..."
-                                    />
-                                  </div>
-                                  <div className="text-[10px] text-muted-foreground whitespace-nowrap">
-                                    {sub.diasSemana.length} dias
-                                  </div>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7 shrink-0"
-                                    onClick={() => setConfigSubbloco({ rotinaId: rotina.id, subblocoId: sub.id })}
-                                  >
-                                    <Settings2 className="h-3.5 w-3.5" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7 shrink-0"
-                                    onClick={() => removeSubbloco(rotina.id, sub.id)}
-                                  >
-                                    <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
-                                  </Button>
-                                </div>
+                                <SubblocoCard
+                                  key={sub.id}
+                                  subbloco={sub}
+                                  onConfigure={() => setConfigSubbloco({ rotinaId: rotina.id, subblocoId: sub.id })}
+                                  onRemove={() => removeSubbloco(rotina.id, sub.id)}
+                                />
                               ))}
                             </div>
                             <Button
