@@ -62,6 +62,8 @@ function AutocompleteInput({ value, onChange, suggestions, placeholder }: {
 export default function StepTurnosRotinas({ template, onChange }: StepTurnosRotinasProps) {
   const [expandedRotinas, setExpandedRotinas] = useState<Set<string>>(new Set());
   const [configSubbloco, setConfigSubbloco] = useState<{ rotinaId: string; subblocoId: string } | null>(null);
+  const [pickerRotinaId, setPickerRotinaId] = useState<string | null>(null);
+  const [pickerSearch, setPickerSearch] = useState('');
 
   const toggleExpanded = (id: string) => {
     setExpandedRotinas(prev => {
