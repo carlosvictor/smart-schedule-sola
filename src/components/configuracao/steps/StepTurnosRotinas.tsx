@@ -224,7 +224,7 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
                               variant="outline"
                               size="sm"
                               className="mt-2 text-xs h-8"
-                              onClick={() => addSubbloco(rotina.id)}
+                              onClick={() => setPickerRotinaId(rotina.id)}
                             >
                               <Plus className="h-3.5 w-3.5 mr-1" />
                               Adicionar Subbloco
