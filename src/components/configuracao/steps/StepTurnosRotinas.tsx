@@ -92,8 +92,9 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
     onChange({ ...template, rotinas: template.rotinas.filter(r => r.id !== id) });
   };
 
-  const addSubbloco = (rotinaId: string) => {
+  const addSubbloco = (rotinaId: string, titulo: string) => {
     const sub = createEmptySubbloco();
+    sub.titulo = titulo;
     onChange({
       ...template,
       rotinas: template.rotinas.map(r =>
