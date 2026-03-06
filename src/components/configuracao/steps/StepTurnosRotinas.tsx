@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Plus, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { Plus, ChevronDown, ChevronUp, Trash2, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import SubblocoCard from './SubblocoCard';
 
@@ -62,6 +62,8 @@ function AutocompleteInput({ value, onChange, suggestions, placeholder }: {
 export default function StepTurnosRotinas({ template, onChange }: StepTurnosRotinasProps) {
   const [expandedRotinas, setExpandedRotinas] = useState<Set<string>>(new Set());
   const [configSubbloco, setConfigSubbloco] = useState<{ rotinaId: string; subblocoId: string } | null>(null);
+  const [pickerRotinaId, setPickerRotinaId] = useState<string | null>(null);
+  const [pickerSearch, setPickerSearch] = useState('');
 
   const toggleExpanded = (id: string) => {
     setExpandedRotinas(prev => {
@@ -90,8 +92,9 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
     onChange({ ...template, rotinas: template.rotinas.filter(r => r.id !== id) });
   };
 
-  const addSubbloco = (rotinaId: string) => {
+  const addSubbloco = (rotinaId: string, titulo: string) => {
     const sub = createEmptySubbloco();
+    sub.titulo = titulo;
     onChange({
       ...template,
       rotinas: template.rotinas.map(r =>
@@ -221,7 +224,7 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
                               variant="outline"
                               size="sm"
                               className="mt-2 text-xs h-8"
-                              onClick={() => addSubbloco(rotina.id)}
+                              onClick={() => setPickerRotinaId(rotina.id)}
                             >
                               <Plus className="h-3.5 w-3.5 mr-1" />
                               Adicionar Subbloco
@@ -332,6 +335,45 @@ export default function StepTurnosRotinas({ template, onChange }: StepTurnosRoti
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Subbloco Picker Modal */}
+      <Dialog open={!!pickerRotinaId} onOpenChange={open => { if (!open) { setPickerRotinaId(null); setPickerSearch(''); } }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base">Adicionar Subbloco</DialogTitle>
+          </DialogHeader>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              className="pl-9 h-9 text-sm"
+              placeholder="Pesquisar subbloco..."
+              value={pickerSearch}
+              onChange={e => setPickerSearch(e.target.value)}
+              autoFocus
+            />
+          </div>
+          <div className="max-h-64 overflow-y-auto space-y-0.5 -mx-1 px-1">
+            {SUBBLOCOS_CADASTRADOS_MOCK
+              .filter(s => s.toLowerCase().includes(pickerSearch.toLowerCase()))
+              .map(name => (
+                <button
+                  key={name}
+                  className="w-full text-left px-3 py-2 rounded-md text-sm hover:bg-accent transition-colors"
+                  onClick={() => {
+                    if (pickerRotinaId) addSubbloco(pickerRotinaId, name);
+                    setPickerRotinaId(null);
+                    setPickerSearch('');
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            {SUBBLOCOS_CADASTRADOS_MOCK.filter(s => s.toLowerCase().includes(pickerSearch.toLowerCase())).length === 0 && (
+              <p className="text-sm text-muted-foreground text-center py-4">Nenhum subbloco encontrado</p>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
